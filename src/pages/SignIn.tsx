@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import Model from "../components/Model";
 
 const schema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -99,38 +100,7 @@ const SignIn = () => {
           </div>
         </div>
       </section>
-      {isOpen && (
-        <div className="fixed inset-0 flex items-center justify-center bg-gray-900 bg-opacity-50">
-          <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-            <h2 className="text-xl font-semibold mb-4">Forgot Password</h2>
-            <p className="text-gray-600 mb-4">
-              Enter your email to receive a reset link.
-            </p>
-            <div>
-              <div className="mt-2">
-                <input
-                  type="email"
-                  name="email"
-                  id="email"
-                  required
-                  className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
-                />
-              </div>
-            </div>
-            <div className="flex justify-end mt-4">
-              <button
-                onClick={() => setIsOpen(false)}
-                className="bg-gray-400 text-white px-4 py-2 rounded-lg hover:bg-gray-500 mr-2 cursor-pointer"
-              >
-                Cancel
-              </button>
-              <button className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 cursor-pointer">
-                Submit
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
+      {isOpen && <Model setIsOpen={setIsOpen} />}
     </>
   );
 };

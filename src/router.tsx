@@ -5,22 +5,7 @@ import SignIn from "./pages/SignIn";
 import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
-
-const checkAuth = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  if (!isAuthenticated) {
-    throw redirect("/sign-in");
-  }
-  return null;
-};
-
-const redirectIfAuthenticated = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  if (isAuthenticated) {
-    throw redirect("/dashboard");
-  }
-  return null;
-};
+import { checkAuth, redirectIfAuthenticated } from "./utils/auth";
 
 const router = createBrowserRouter([
   {
