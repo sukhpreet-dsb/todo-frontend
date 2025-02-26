@@ -1,6 +1,8 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { signUp } from "../services/authService";
+import toast from "react-hot-toast";
 
 const schema = z
   .object({
@@ -26,13 +28,24 @@ const SignUp = () => {
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Sign In Data:", data);
+  const onSubmit = async (data: any) => {
+    const response = await signUp(data);
+    if (response.success) {
+      console.log(response)
+      resetField("name");
+      resetField("email");
+      resetField("password");
+      resetField("confirmPassword");
+      toast.success(response.successMessage);
+    } else {
+      toast.error(response.errorMessage);
+    }
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">

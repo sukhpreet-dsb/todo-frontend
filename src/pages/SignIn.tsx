@@ -3,6 +3,8 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import Model from "../components/Model";
+import { signIn } from "../services/authService";
+import toast from "react-hot-toast";
 
 const schema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -18,13 +20,21 @@ const SignIn = () => {
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Sign In Data:", data);
+  const onSubmit = async (data: any) => {
+    const response = await signIn(data);
+    if (response.success) {
+      resetField("email");
+      resetField("password");
+      toast.success(response.successMessage);
+    } else {
+      toast.error(response.errorMessage);
+    }
   };
   return (
     <>

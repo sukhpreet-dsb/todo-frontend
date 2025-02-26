@@ -1,30 +1,44 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
+import { resetPassword } from "../services/authService";
+import toast from "react-hot-toast";
+import { useNavigate, useParams } from "react-router-dom";
 
 const schema = z
   .object({
-    password: z
+    newPassword: z
       .string()
       .min(1, "Password is required")
       .min(6, "Password must be at least 6 characters"),
     confirmPassword: z.string().min(1, "Confirm Password is required"),
   })
-  .refine((data) => data.password === data.confirmPassword, {
+  .refine((data) => data.newPassword === data.confirmPassword, {
     message: "Passwords do not match",
     path: ["confirmPassword"],
   });
 const ResetPassword = () => {
+  const { token } = useParams();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const onSubmit = (data: any) => {
-    console.log("Sign In Data:", data);
+  const onSubmit = async (data: any) => {
+    const response = await resetPassword(data.newPassword, token);
+    if (response.success) {
+      resetField("newPassword");
+      resetField("confirmPassword");
+      toast.success(response.successMessage);
+      navigate("/sign-in");
+    } else {
+      toast.error(response.errorMessage);
+    }
   };
   return (
     <section className="bg-gray-50 dark:bg-gray-900">
@@ -50,12 +64,12 @@ const ResetPassword = () => {
                 <input
                   type="password"
                   id="password"
-                  {...register("password")}
+                  {...register("newPassword")}
                   className="block w-full rounded-md bg-white px-3 py-1.5 text-base text-gray-900 outline-1 -outline-offset-1 outline-gray-300 placeholder:text-gray-400 focus:outline-2 focus:-outline-offset-2 focus:outline-indigo-600 sm:text-sm/6"
                 />
-                {errors.password && (
+                {errors.newPassword && (
                   <p className="text-red-500 text-sm mt-1">
-                    {errors.password.message}
+                    {errors.newPassword.message}
                   </p>
                 )}
               </div>
