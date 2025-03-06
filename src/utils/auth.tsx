@@ -1,16 +1,17 @@
 import { redirect } from "react-router-dom";
+import useAuthStore from "../store/useAuthStore";
 
 export const checkAuth = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  if (!isAuthenticated) {
+  const accessToken = useAuthStore.getState().accessToken
+  if (!accessToken) {
     throw redirect("/sign-in");
   }
   return null;
 };
 
 export const redirectIfAuthenticated = () => {
-  const isAuthenticated = !!localStorage.getItem("token");
-  if (isAuthenticated) {
+  const accessToken = useAuthStore.getState().accessToken
+  if (accessToken) {
     throw redirect("/dashboard");
   }
   return null;

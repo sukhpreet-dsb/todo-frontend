@@ -5,6 +5,8 @@ import * as z from "zod";
 import Model from "../components/Model";
 import { signIn } from "../services/authService";
 import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
+import useStore from "../store/useAuthStore";
 
 const schema = z.object({
   email: z.string().min(1, "Email is required").email("Invalid email address"),
@@ -15,8 +17,9 @@ const schema = z.object({
 });
 
 const SignIn = () => {
+  const { setAccessToken,setRefreshToken } = useStore();
   const [isOpen, setIsOpen] = useState(false);
-
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -28,9 +31,12 @@ const SignIn = () => {
 
   const onSubmit = async (data: any) => {
     const response = await signIn(data);
+    navigate("/dashboard");
     if (response.success) {
       resetField("email");
       resetField("password");
+      setAccessToken(response.data.token)
+      setRefreshToken(response.data.refreshtoken)
       toast.success(response.successMessage);
     } else {
       toast.error(response.errorMessage);

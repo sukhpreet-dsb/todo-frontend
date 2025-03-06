@@ -6,6 +6,8 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import { checkAuth, redirectIfAuthenticated } from "./utils/auth";
+import Test from "./pages/Test";
+import Cart from "./pages/Cart";
 
 const router = createBrowserRouter([
   {
@@ -31,6 +33,16 @@ const router = createBrowserRouter([
         element: <ResetPassword />,
         loader: redirectIfAuthenticated,
       },
+      // {
+      //   path : "test",
+      //   element : <Test />,
+      //   loader : redirectIfAuthenticated
+      // },
+      // {
+      //   path : "cart",
+      //   element : <Cart />,
+      //   loader : redirectIfAuthenticated
+      // },
       {
         path: "dashboard",
         element: <Dashboard />,

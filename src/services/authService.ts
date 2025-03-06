@@ -39,3 +39,12 @@ export const resetPassword = async (
     return error.response.data;
   }
 };
+
+export const userInfo = async () => {
+  try {
+    const response = await api.get("/auth/me");
+    return response?.data;
+  } catch (error) {
+    return error.response.data;
+  }
+};
