@@ -69,7 +69,6 @@
 // export default useStore;
 
 import { create } from "zustand";
-import { createJSONStorage, persist } from "zustand/middleware";
 
 type AuthStore = {
   accessToken: string | null;
@@ -81,18 +80,13 @@ type AuthStore = {
   // logout:()=>void
 };
 
-const useAuthStore = create<AuthStore>()(
-  persist(
+const useAuthStore = create<AuthStore>(
     (set) => ({
       accessToken: null,
       refreshToken: null,
       setAccessToken: (token) => set({ accessToken: token }),
       setRefreshToken: (token) => set({ refreshToken: token }),
       logout: () => set({ accessToken: null, refreshToken: null }),
-    }),
-    {
-      name: "access-token",
-      storage: createJSONStorage(() => sessionStorage),
     }
   )
 );

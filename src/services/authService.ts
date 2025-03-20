@@ -33,7 +33,10 @@ export const resetPassword = async (
   token: string | undefined
 ) => {
   try {
-    const response = await api.post("/auth/reset-password", { newPassword, token });
+    const response = await api.post("/auth/reset-password", {
+      newPassword,
+      token,
+    });
     return response.data;
   } catch (error) {
     return error.response.data;
@@ -46,5 +49,16 @@ export const userInfo = async () => {
     return response?.data;
   } catch (error) {
     return error.response.data;
+  }
+};
+
+export const refreshToken = async () => {
+  try {
+    const response = await api.post("/auth/refresh-token");
+    return response;
+  } catch (error) {
+    console.log("ERROR:",error)
+    return error.response.data;
+    throw error
   }
 };
