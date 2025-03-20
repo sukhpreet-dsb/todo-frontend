@@ -57,8 +57,15 @@ export const refreshToken = async () => {
     const response = await api.post("/auth/refresh-token");
     return response;
   } catch (error) {
-    console.log("ERROR:",error)
     return error.response.data;
-    throw error
+  }
+};
+
+export const logout = async () => {
+  try {
+    const response = await api.post("/auth/logout");
+    return response;
+  } catch (error) {
+    return error.response.data;
   }
 };

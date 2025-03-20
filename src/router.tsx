@@ -6,8 +6,8 @@ import SignUp from "./pages/SignUp";
 import ResetPassword from "./pages/ResetPassword";
 import Dashboard from "./pages/Dashboard";
 import { checkAuth, redirectIfAuthenticated } from "./utils/auth";
-import Test from "./pages/Test";
-import Cart from "./pages/Cart";
+// import Test from "./pages/Test";
+// import Cart from "./pages/Cart";
 
 const router = createBrowserRouter([
   {

@@ -1,9 +1,25 @@
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import useStore from "../store/useAuthStore";
+import { logout } from "../services/authService";
+import useAuthStore from "../store/useAuthStore";
+import toast from "react-hot-toast";
 
 const Navbar = () => {
+  const navigate = useNavigate();
   const { accessToken } = useStore();
+
+  async function handleLogout() {
+    const response = await logout();
+    if (response.data.success) {
+      useAuthStore.setState({ accessToken: null });
+      toast.success(response?.data?.successMessage);
+      navigate("/sign-in");
+    }
+    else{
+      toast.error(response?.data?.errorMessage);
+    }
+  }
   // const [isAuthenticated, setIsAuthenticated] = useState(false);
 
   // useEffect(() => {
@@ -32,7 +48,14 @@ const Navbar = () => {
                 </Link> */}
               </>
             )}
-            {accessToken && <Link to="/dashboard">Dashboard</Link>}
+            {accessToken && (
+              <>
+                <Link to="/dashboard">Dashboard</Link>
+                <button className="cursor-pointer" onClick={handleLogout}>
+                  Logout
+                </button>
+              </>
+            )}
           </ul>
         </div>
       </nav>
